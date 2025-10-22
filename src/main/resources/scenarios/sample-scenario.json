@@ -1,0 +1,69 @@
+{
+  "scenario_id": "phishing-lateral-movement",
+  "description": "Simulates a phishing attack followed by lateral movement",
+  "max_ticks": 25,
+  "hosts": [
+    {
+      "host_name": "web-server",
+      "ip_address": "192.168.1.10",
+      "operating_system": "Linux",
+      "services": ["HTTP", "HTTPS", "SSH"]
+    },
+    {
+      "host_name": "db-server",
+      "ip_address": "192.168.1.20",
+      "operating_system": "Linux",
+      "services": ["MySQL", "SSH"]
+    },
+    {
+      "host_name": "workstation-01",
+      "ip_address": "192.168.1.100",
+      "operating_system": "Windows",
+      "services": ["RDP", "SMB"]
+    },
+    {
+      "host_name": "file-server",
+      "ip_address": "192.168.1.30",
+      "operating_system": "Windows",
+      "services": ["SMB", "FTP"]
+    }
+  ],
+  "attacks": [
+    {
+      "tick": 5,
+      "attack_type": "phishing",
+      "target_host": "workstation-01",
+      "parameters": {
+        "success_rate": 0.8,
+        "severity": "medium"
+      }
+    },
+    {
+      "tick": 10,
+      "attack_type": "lateral_movement",
+      "target_host": "web-server",
+      "parameters": {
+        "source_host": "workstation-01",
+        "method": "credential_theft"
+      }
+    },
+    {
+      "tick": 15,
+      "attack_type": "lateral_movement",
+      "target_host": "db-server",
+      "parameters": {
+        "source_host": "web-server",
+        "method": "vulnerability_exploit"
+      }
+    },
+    {
+      "tick": 20,
+      "attack_type": "data_exfiltration",
+      "target_host": "db-server",
+      "parameters": {
+        "data_size_mb": 150,
+        "severity": "high"
+      }
+    }
+  ]
+}
