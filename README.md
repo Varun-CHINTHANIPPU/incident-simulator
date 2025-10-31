@@ -4,32 +4,38 @@ A configurable, tick-based discrete event simulator that generates realistic cyb
 
 Project Overview
 The Cybersecurity Incident Response Simulator is designed to generate realistic cyberattack scenarios within a controlled environment. It produces structured, SIEM-compatible logs that can be used for training, testing, and analysis.
+
 It is suitable for:
     • Security Operations Center (SOC) analyst training
     • Incident response playbook development and testing
     • SIEM configuration and validation
     • Security awareness exercises
     • Academic and cybersecurity research
+    
 Key feature: deterministic randomness using a seed-based random number generator for reproducible simulation results.
 Features
+
 Attack Simulation
     • Phishing attacks with configurable success rates
     • Lateral movement between network hosts
     • Data exfiltration with adjustable payload sizes
     • Probabilistic detection model simulating real SIEM accuracy (default: 70% detection rate)
+    
 Logging and Observability
     • Structured JSON logs ready for ELK stack ingestion
     • Real-time event streaming to Elasticsearch via Logstash
     • Preconfigured Kibana dashboards for visualization
     • Metrics: total events, alerts, and time-to-detection
+    
 Configuration
     • JSON-based scenario configuration files
     • Network topology definition (hosts, IPs, services)
     • Discrete tick-based event system
     • Seed-based reproducibility for consistent results
+    
 Architecture
 ┌─────────────────┐     ┌──────────────┐     ┌─────────────────┐
-│ Simulator       |───▶ │ JSON Logs	   │───▶ │ Logstash        │
+│ Simulator       |───▶│ JSON Logs	   │───▶│ Logstash        │
 │ (Java 17)       │     │ (Events)     │     |(Pipeline)       │
 └─────────────────┘     └──────────────┘     └─────────────────┘
                            │
@@ -63,19 +69,26 @@ incident-simulator/
 └── README.md
 
 Development
+
 Building from Source
 mvn clean compile
+
 Running Tests
 mvn test
+
 Creating a JAR
 mvn package
 java -jar target/incident-simulator-1.0-SNAPSHOT.jar
+
+
 Dependencies
     • Jackson (JSON parsing and serialization)
     • SLF4J + Log4j2 (logging)
     • JUnit 5 (testing)
     • Docker (ELK stack deployment)
 Refer to pom.xml for the full dependency list.
+
+
 Quick Start
 Prerequisites
     • Java 17 or later
@@ -98,9 +111,11 @@ mvn exec:java -Dexec.mainClass="com.simulator.Main"
     3. Create a data view named simulation-events-* with timestamp field @timestamp
     4. Explore events under Discover
     5. Create custom visualizations and dashboards
+  
 Usage
 Running Custom Scenarios
 mvn exec:java -Dexec.mainClass="com.simulator.Main" -Dexec.args="scenarios/my-scenario.json 54321"
+
 Arguments:
     • scenarios/my-scenario.json: Path to scenario file
     • 54321: Random seed for reproducibility (optional)
