@@ -248,3 +248,16 @@ Incident Response Drills: Simulate containment and recovery steps.
 Security Research: Analyze attack timing and detection rates.
 Academic Projects: Demonstrate cybersecurity principles and defense mechanisms.
 
+
+
+
+### Execution:
+```
+cd src/docker
+sudo systemctl start docker
+docker-compose up -d
+cd ../../
+mvn clean compile
+mvn exec:java -Dexec.mainClass="com.simulator.Main"
+```
+Elasticseach starts on: http://localhost:5601/
