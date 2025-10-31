@@ -1,4 +1,4 @@
-Cybersecurity Incident Response Simulator
+# Cybersecurity Incident Response Simulator
 
 A configurable, tick-based discrete event simulator that generates realistic cybersecurity attack scenarios and SIEM-ready logs for incident response training and analysis.
 
@@ -15,24 +15,24 @@ It is suitable for:
 Key feature: deterministic randomness using a seed-based random number generator for reproducible simulation results.
 Features
 
-Attack Simulation
+ ### Attack Simulation
     • Phishing attacks with configurable success rates
     • Lateral movement between network hosts
     • Data exfiltration with adjustable payload sizes
     • Probabilistic detection model simulating real SIEM accuracy (default: 70% detection rate)
     
-Logging and Observability
+ ### Logging and Observability
     • Structured JSON logs ready for ELK stack ingestion
     • Real-time event streaming to Elasticsearch via Logstash
     • Preconfigured Kibana dashboards for visualization
     • Metrics: total events, alerts, and time-to-detection
     
-Configuration
+ ### Configuration
     • JSON-based scenario configuration files
     • Network topology definition (hosts, IPs, services)
     • Discrete tick-based event system
     • Seed-based reproducibility for consistent results
-    
+```    
 Architecture
 ┌─────────────────┐     ┌──────────────┐     ┌─────────────────┐
 │ Simulator       |───▶│ JSON Logs	   │───▶│ Logstash        │
@@ -50,38 +50,40 @@ Architecture
                     │ Kibana          │
                     │ (Visualization) │
                     └─────────────────┘
-
+```
+```
 Project Structure
 incident-simulator/
 ├── src/main/java/com/simulator/
-│   ├── core/           # Simulation engine and scheduler
-│   ├── config/         # Scenario configuration and loader
-│   ├── logging/        # Structured event logging
-│   └── detection/      # Attack detection engine
+│ ├── core/ # Simulation engine and scheduler
+│ ├── config/ # Scenario configuration and loader
+│ ├── logging/ # Structured event logging
+│ └── detection/ # Attack detection engine
 ├── src/main/resources/
-│   ├── scenarios/      # Scenario JSON definitions
-│   └── log4j2.xml      # Logging configuration
-├── src/docker/          # Docker and ELK setup
-│   ├── docker-compose.yml
-│   └── logstash.conf
-├── logs/                # Generated simulation logs
-├── pom.xml              # Maven dependencies
+│ ├── scenarios/ # Scenario JSON definitions
+│ └── log4j2.xml # Logging configuration
+├── src/docker/ # Docker and ELK setup
+│ ├── docker-compose.yml
+│ └── logstash.conf
+├── logs/ # Generated simulation logs
+├── pom.xml # Maven dependencies
 └── README.md
+```
 
 Development
 
-Building from Source
+### Building from Source:
 mvn clean compile
 
-Running Tests
+### Running Tests:
 mvn test
 
-Creating a JAR
+### Creating a JAR:
 mvn package
 java -jar target/incident-simulator-1.0-SNAPSHOT.jar
 
 
-Dependencies
+### Dependencies
     • Jackson (JSON parsing and serialization)
     • SLF4J + Log4j2 (logging)
     • JUnit 5 (testing)
@@ -89,8 +91,8 @@ Dependencies
 Refer to pom.xml for the full dependency list.
 
 
-Quick Start
-Prerequisites
+### Quick Start
+#### Prerequisites
     • Java 17 or later
     • Maven 3.6 or later
     • Docker and Docker Compose (for ELK stack)
@@ -112,15 +114,16 @@ mvn exec:java -Dexec.mainClass="com.simulator.Main"
     4. Explore events under Discover
     5. Create custom visualizations and dashboards
   
-Usage
+### Usage
 Running Custom Scenarios
-mvn exec:java -Dexec.mainClass="com.simulator.Main" -Dexec.args="scenarios/my-scenario.json 54321"
+```mvn exec:java -Dexec.mainClass="com.simulator.Main" -Dexec.args="scenarios/my-scenario.json 54321"```
 
-Arguments:
+### Arguments:
     • scenarios/my-scenario.json: Path to scenario file
     • 54321: Random seed for reproducibility (optional)
 Creating Custom Scenarios
 Example JSON (saved in src/main/resources/scenarios/):
+```
 {
   "scenario_id": "custom-attack",
   "description": "Custom phishing to ransomware scenario",
@@ -144,14 +147,17 @@ Example JSON (saved in src/main/resources/scenarios/):
     }
   ]
 }
-
-Supported Attack Types
+```
+### Supported Attack Types
+```
 Attack Type	Description	Parameters
 phishing	Email-based social engineering	success_rate (0.0–1.0)
 lateral_movement	Host-to-host compromise	source_host, method
 data_exfiltration	Data theft	data_size_mb, destination
+```
 
-Example Output
+### Example Output
+```
 Console Output
 21:49:07.981 [main] WARN SimulationEngine - Host workstation-01 compromised via phishing
 21:49:07.988 [main] WARN DetectionEngine - [ALERT] PHISHING_DETECTED | Host: workstation-01
@@ -161,7 +167,8 @@ Console Output
 Total Events: 4
 Total Alerts: 2
 Time to First Detection: 9 ms
-
+```
+```
 {
   "timestamp": "2025-10-22T16:19:07.981Z",
   "scenario_id": "phishing-lateral-movement",
@@ -174,80 +181,70 @@ Time to First Detection: 9 ms
     "attack_method": "phishing"
   }
 }
+```
 
-
-Docker Setup
-ELK Stack Services
+### Docker Setup
+#### ELK Stack Services
     • Elasticsearch: http://localhost:9200
     • Kibana: http://localhost:5601
     • Logstash: Port 5000
 Managing Docker Services
+```
 cd src/docker
 docker-compose up -d
+```
 Stop:
+```
 docker-compose down
-
+```
 
 View logs:
+```
 docker-compose logs -f logstash
-
+```
 
 Restart a service:
+```
 docker-compose restart logstash
+```
 
-Configuration
-Detection Rate
+### Configuration
+Detection Rate:<br>
 Edit src/main/java/com/simulator/core/SimulationEngine.java:
+```
 this.detectionEngine = new DetectionEngine(metrics, scheduler.getRandom(), 0.7); // 70% detection
-Logging Level
+```
+Logging Level<br>
 Edit src/main/resources/log4j2.xml:
 
-
+```
 <Logger name="com.simulator" level="info" additivity="false">
 Options: debug, info, warn, error
 
+```
 
-Kibana Visualization Examples
-Attack Type Distribution (Pie Chart)
-Field: event_type.keyword
-Shows breakdown of phishing, lateral movement, and data exfiltration events.
+Kibana Visualization Examples<br>
+Attack Type Distribution (Pie Chart)<br>
+Field: event_type.keyword<br>
+Shows breakdown of phishing, lateral movement, and data exfiltration events.<br>
+<br>
+Severity Timeline (Area Chart)<br>
+X-axis: @timestamp<br>
+Y-axis: Count<br>
+Breakdown by: severity.keyword<br>
+<br>
+Compromised Hosts (Bar Chart)<br>
+X-axis: host_name.keyword<br>
+Y-axis: Count of events<br>
 
-Severity Timeline (Area Chart)
-X-axis: @timestamp
-Y-axis: Count
-Breakdown by: severity.keyword
+Attack Chain (Table)<br>
+Columns: details.source_host.keyword, details.target_host.keyword<br>
+Filter: event_type: "lateral_movement"<br>
 
-Compromised Hosts (Bar Chart)
-X-axis: host_name.keyword
-Y-axis: Count of events
-
-Attack Chain (Table)
-Columns: details.source_host.keyword, details.target_host.keyword
-Filter: event_type: "lateral_movement"
-
-Use Cases
+### Use Cases
 SOC Training: Identify attack patterns and practice incident response.
-
 SIEM Testing: Generate data to validate correlation rules and alerts.
-
 Incident Response Drills: Simulate containment and recovery steps.
-
 Security Research: Analyze attack timing and detection rates.
-
 Academic Projects: Demonstrate cybersecurity principles and defense mechanisms.
 
-
-Development
-Building from Source
-mvn clean compile
-Running Tests
-mvn test
-Creating a JAR
-mvn package
-java -jar target/incident-simulator-1.0-SNAPSHOT.jar
-Dependencies
-    • Jackson (JSON parsing and serialization)
-    • SLF4J + Log4j2 (logging)
-    • JUnit 5 (testing)
-    • Docker (ELK stack deployment)
-Refer to pom.xml for the full dependency list.
